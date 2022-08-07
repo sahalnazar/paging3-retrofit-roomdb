@@ -1,6 +1,9 @@
 package com.sahalnazar.paging3_retrofit_roomdb.data.model
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.sahalnazar.paging3_retrofit_roomdb.data.db.Converters
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -9,7 +12,7 @@ data class MovieListResponse(
     @SerialName("page")
     val page: Int? = null,
     @SerialName("results")
-    val results: List<Result?>? = null,
+    val movies: List<Movie?>? = null,
     @SerialName("total_pages")
     val totalPages: Int? = null,
     @SerialName("total_results")
@@ -17,14 +20,16 @@ data class MovieListResponse(
 ) {
 
     @Entity(tableName = "movies_table")
+    @TypeConverters(Converters.GenreIdsModel::class)
     @Serializable
-    data class Result(
+    data class Movie(
         @SerialName("adult")
         val adult: Boolean? = null,
         @SerialName("backdrop_path")
         val backdropPath: String? = null,
         @SerialName("genre_ids")
         val genreIds: List<Int?>? = null,
+        @PrimaryKey(autoGenerate = false)
         @SerialName("id")
         val id: Int? = null,
         @SerialName("original_language")

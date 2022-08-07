@@ -22,47 +22,8 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class) // SingletonComponent, because it need to stay through out the Application life cycle.
-object AppModule {
-
-    @Provides
-    @Singleton
-    fun provideOkHttpClient(
-    ): OkHttpClient {
-        return OkHttpClient.Builder().apply {
-            if (BuildConfig.DEBUG) {
-                val logging = HttpLoggingInterceptor()
-                logging.level = HttpLoggingInterceptor.Level.BODY
-                addInterceptor(logging)
-            }
-            connectTimeout(5, TimeUnit.MINUTES)
-            readTimeout(5, TimeUnit.MINUTES)
-            writeTimeout(5, TimeUnit.MINUTES)
-            callTimeout(5, TimeUnit.MINUTES)
-        }.build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideJson() = Json {
-        ignoreUnknownKeys = true
-        isLenient = true
-    }
-
-    @OptIn(ExperimentalSerializationApi::class)
-    @Provides
-    @Singleton
-    fun provideRetrofit(
-        okHttpClient: OkHttpClient,
-        json: Json
-    ): Retrofit {
-        return Retrofit.Builder()
-            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-            .baseUrl("BASE_URL")
-            .client(okHttpClient)
-            .build()
-    }
-
+@InstallIn(SingletonComponent::class)
+object DataModule {
 
     @Provides
     @Singleton
@@ -71,7 +32,8 @@ object AppModule {
             context,
             AppDatabase::class.java,
             "app_room_db"
-        ).fallbackToDestructiveMigration()
+        )
+            .fallbackToDestructiveMigration()
             .build()
     }
 
