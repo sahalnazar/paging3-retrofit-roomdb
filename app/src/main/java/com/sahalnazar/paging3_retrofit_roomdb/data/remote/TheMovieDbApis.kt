@@ -17,7 +17,7 @@ interface TheMovieDbApis {
     ): Response<MovieListResponse>
 
     @GET("movie/{movieId}")
-    suspend fun fetMovieDetail(
+    suspend fun fetchMovieDetail(
         @Path(value = "movieId", encoded = true) movieId: String,
     ): Response<MovieDetailResponse>
 
