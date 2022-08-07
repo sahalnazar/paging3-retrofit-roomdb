@@ -1,9 +1,10 @@
-package com.sahalnazar.paging3_retrofit_roomdb.data
+package com.sahalnazar.paging3_retrofit_roomdb.data.model
 
+import androidx.room.Entity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@kotlinx.serialization.Serializable
+@Serializable
 data class MovieListResponse(
     @SerialName("page")
     val page: Int? = null,
@@ -14,6 +15,8 @@ data class MovieListResponse(
     @SerialName("total_results")
     val totalResults: Int? = null
 ) {
+
+    @Entity(tableName = "movies_table")
     @Serializable
     data class Result(
         @SerialName("adult")

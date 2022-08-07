@@ -1,4 +1,4 @@
-package com.sahalnazar.paging3_retrofit_roomdb.data
+package com.sahalnazar.paging3_retrofit_roomdb.data.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
