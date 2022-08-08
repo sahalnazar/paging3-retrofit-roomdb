@@ -1,4 +1,4 @@
-package com.sahalnazar.paging3_retrofit_roomdb.data
+package com.sahalnazar.paging3_retrofit_roomdb.data.remote
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
@@ -6,13 +6,12 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.sahalnazar.paging3_retrofit_roomdb.data.db.AppDatabase
 import com.sahalnazar.paging3_retrofit_roomdb.data.model.MovieListResponse
-import com.sahalnazar.paging3_retrofit_roomdb.data.remote.TheMovieDbApis
 import com.sahalnazar.paging3_retrofit_roomdb.util.safeApiCall
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class AppRepository @Inject constructor(
-    private val theMovieDbApis: TheMovieDbApis,
+    private val appApis: AppApis,
     private val db: AppDatabase
 ) {
 
@@ -23,7 +22,7 @@ class AppRepository @Inject constructor(
     suspend fun fetMovieDetail(
         movieId: String
     ) = safeApiCall {
-        theMovieDbApis.fetchMovieDetail(
+        appApis.fetchMovieDetail(
             movieId = movieId
         )
     }
@@ -35,7 +34,7 @@ class AppRepository @Inject constructor(
                 pageSize = PAGE_SIZE,
                 enablePlaceholders = false,
             ),
-            remoteMediator = null, // TODO
+            remoteMediator = AppRemoteMediator(appApis = appApis, db = db),
             pagingSourceFactory = { db.remoteMoviesDao().getMovies() }
         ).flow
     }

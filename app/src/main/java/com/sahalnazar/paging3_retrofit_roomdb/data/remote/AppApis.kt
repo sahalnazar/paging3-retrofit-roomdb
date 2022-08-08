@@ -7,14 +7,13 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface TheMovieDbApis {
+interface AppApis {
 
-    @GET("discover/movie")
+    @GET("movie/now_playing")
     suspend fun fetchMovieList(
-        @Query("language") language: String = "en-US",
-        @Query("sort_by") sort_by: String = "popularity.desc",
         @Query("page") page: String,
-    ): Response<MovieListResponse>
+        @Query("region") region: String,
+    ): MovieListResponse
 
     @GET("movie/{movieId}")
     suspend fun fetchMovieDetail(

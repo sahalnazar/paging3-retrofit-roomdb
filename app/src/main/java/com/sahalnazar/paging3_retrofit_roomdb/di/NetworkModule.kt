@@ -2,7 +2,7 @@ package com.sahalnazar.paging3_retrofit_roomdb.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.sahalnazar.paging3_retrofit_roomdb.BuildConfig
-import com.sahalnazar.paging3_retrofit_roomdb.data.remote.TheMovieDbApis
+import com.sahalnazar.paging3_retrofit_roomdb.data.remote.AppApis
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -62,7 +62,7 @@ object NetworkModule {
     @Singleton
     fun provideApiService(
         retrofit: Retrofit
-    ): TheMovieDbApis {
-        return retrofit.create(TheMovieDbApis::class.java)
+    ): AppApis {
+        return retrofit.create(AppApis::class.java)
     }
 }

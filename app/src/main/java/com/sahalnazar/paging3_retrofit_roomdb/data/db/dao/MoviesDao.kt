@@ -11,7 +11,7 @@ import com.sahalnazar.paging3_retrofit_roomdb.data.model.MovieListResponse.Movie
 interface MoviesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMovies(list: List<Movie>)
+    suspend fun insertMovies(list: List<Movie?>)
 
     @Query("SELECT * FROM movies_table")
     fun getMovies(): PagingSource<Int, Movie>
