@@ -7,6 +7,29 @@ import java.net.UnknownHostException
 const val ERROR_NO_INTERNET = "Please check your internet connection"
 const val ERROR_UNKNOWN = "An unknown error has occurred"
 
+data class BaseResult<out T>(val status: Status, val data: T?, val message: String?, val code: Int?) {
+
+    enum class Status {
+        SUCCESS,
+        ERROR,
+        LOADING
+    }
+
+    companion object {
+        fun <T> success(data: T, code: Int): BaseResult<T> {
+            return BaseResult(Status.SUCCESS, data, null, code)
+        }
+
+        fun <T> error(message: String, data: T?, code: Int): BaseResult<T> {
+            return BaseResult(Status.ERROR, data, message, code)
+        }
+
+        fun <T> loading(data: T? = null): BaseResult<T> {
+            return BaseResult(Status.LOADING, data, null, null)
+        }
+    }
+}
+
 sealed class ResultWrapper<out T> {
     data class Success<out T>(val data: T?, val code: Int) : ResultWrapper<T>()
     data class Failure<out T>(val message: String, val data: T?, val code: Int) : ResultWrapper<T>()
