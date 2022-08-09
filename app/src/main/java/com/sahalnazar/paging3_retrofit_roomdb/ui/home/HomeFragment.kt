@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.asLiveData
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.sahalnazar.paging3_retrofit_roomdb.R
 import com.sahalnazar.paging3_retrofit_roomdb.databinding.FragmentHomeBinding
 import com.sahalnazar.paging3_retrofit_roomdb.util.ExtensionFunctions.dp
@@ -17,7 +18,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private var _binding: FragmentHomeBinding? = null
     private val viewModel by viewModels<HomeViewModel>()
-    private var movieAdapter: MovieAdapter? = MovieAdapter {
+    private var movieAdapter: MovieAdapter = MovieAdapter {
         onMovieItemClicked(it)
     }
 
@@ -33,20 +34,19 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun setupRecyclerView(binding: FragmentHomeBinding) {
         binding.homeRecyclerView.apply {
-            adapter = movieAdapter
-            addItemDecoration(
-                LinearItemDecorator(horizontalSpacing = 16.dp, verticalSpacing = 8.dp)
-            )
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = movieAdapter.withLoadStateFooter(footer = MovieFetchStateAdapter())
+            addItemDecoration(LinearItemDecorator(horizontalSpacing = 16.dp, verticalSpacing = 8.dp))
+            scrollToPosition(0)
         }
         viewModel.fetchNowPlayingMovies().asLiveData().observe(viewLifecycleOwner) {
-            movieAdapter?.submitData(viewLifecycleOwner.lifecycle, it)
+            movieAdapter.submitData(viewLifecycleOwner.lifecycle, it)
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        movieAdapter = null
     }
 
     private fun onMovieItemClicked(movieId: String) {

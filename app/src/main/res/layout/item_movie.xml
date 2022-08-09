@@ -8,9 +8,9 @@
     </data>
 
     <androidx.cardview.widget.CardView
-        app:cardCornerRadius="24dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="24dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -18,7 +18,7 @@
 
             <ImageView
                 android:id="@+id/iv_poster"
-                android:layout_width="wrap_content"
+                android:layout_width="110dp"
                 android:layout_height="160dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -28,28 +28,28 @@
 
             <TextView
                 android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:text="TextView"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="#000000"
                 app:layout_constraintEnd_toStartOf="@+id/tv_rating"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/iv_poster"
-                app:layout_constraintTop_toTopOf="@+id/iv_poster" />
+                app:layout_constraintTop_toTopOf="@+id/iv_poster"
+                tools:text="Title" />
 
             <TextView
                 android:id="@+id/tv_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:text="TextView"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_title" />
+                app:layout_constraintTop_toTopOf="@+id/tv_title"
+                tools:text="rating" />
 
             <TextView
                 android:id="@+id/tv_release_date"
@@ -57,9 +57,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="16dp"
-                android:text="TextView"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_poster"
-                app:layout_constraintStart_toEndOf="@+id/iv_poster" />
+                app:layout_constraintStart_toEndOf="@+id/iv_poster"
+                tools:text="released" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

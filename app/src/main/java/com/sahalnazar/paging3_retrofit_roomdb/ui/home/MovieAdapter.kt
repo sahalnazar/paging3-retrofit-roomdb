@@ -25,7 +25,7 @@ class MovieAdapter(
             oldItem: MovieListResponse.Movie,
             newItem: MovieListResponse.Movie
         ): Boolean {
-            return oldItem == newItem
+            return oldItem.id == newItem.id
         }
 
     }) {
@@ -39,6 +39,7 @@ class MovieAdapter(
                 data.id?.toString()?.let { it1 -> onClick(it1) }
             }
             binding.ivPoster.load(BuildConfig.BASE_IMG_URL + data.posterPath)
+            binding.tvTitle.text = data.title
             binding.tvRating.text = data.voteAverage?.let { "Rating: $it" } ?: "Not found"
             binding.tvReleaseDate.text = data.releaseDate?.let { "Release date: $it" } ?: "Not found"
         }

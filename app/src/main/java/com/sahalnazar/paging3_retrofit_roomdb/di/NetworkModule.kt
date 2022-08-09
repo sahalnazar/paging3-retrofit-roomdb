@@ -3,6 +3,7 @@ package com.sahalnazar.paging3_retrofit_roomdb.di
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.sahalnazar.paging3_retrofit_roomdb.BuildConfig
 import com.sahalnazar.paging3_retrofit_roomdb.data.remote.AppApis
+import com.sahalnazar.paging3_retrofit_roomdb.data.remote.AuthorizationInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,6 +31,7 @@ object NetworkModule {
                 logging.level = HttpLoggingInterceptor.Level.BODY
                 addInterceptor(logging)
             }
+            addInterceptor(AuthorizationInterceptor())
             connectTimeout(5, TimeUnit.MINUTES)
             readTimeout(5, TimeUnit.MINUTES)
             writeTimeout(5, TimeUnit.MINUTES)
@@ -53,7 +55,7 @@ object NetworkModule {
     ): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-            .baseUrl("BASE_URL")
+            .baseUrl(BuildConfig.BASE_URL)
             .client(okHttpClient)
             .build()
     }
