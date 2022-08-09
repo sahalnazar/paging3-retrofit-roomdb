@@ -4,10 +4,14 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.room.withTransaction
 import com.sahalnazar.paging3_retrofit_roomdb.data.db.AppDatabase
 import com.sahalnazar.paging3_retrofit_roomdb.data.model.MovieListResponse
+import com.sahalnazar.paging3_retrofit_roomdb.util.BaseResult
 import com.sahalnazar.paging3_retrofit_roomdb.util.safeApiCall
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.runBlocking
+import retrofit2.Response
 import javax.inject.Inject
 
 class AppRepository @Inject constructor(
@@ -19,13 +23,21 @@ class AppRepository @Inject constructor(
         const val PAGE_SIZE = 30
     }
 
-    suspend fun fetMovieDetail(
+    fun fetMovieDetail(
         movieId: String
-    ) = safeApiCall {
-        appApis.fetchMovieDetail(
-            movieId = movieId
-        )
-    }
+    ) = networkBoundResource(
+        query = {
+            db.remoteMovieDetailsDao().getMovieDetails(movieId)
+        },
+        fetch = {
+            appApis.fetchMovieDetail(movieId)
+        },
+        saveFetchResult = {
+            db.withTransaction {
+                it.body()?.let { it1 -> db.remoteMovieDetailsDao().insertMovieDetails(it1) }
+            }
+        }
+    )
 
     @OptIn(ExperimentalPagingApi::class)
     fun getMovies(): Flow<PagingData<MovieListResponse.Movie>> {
@@ -40,3 +52,5 @@ class AppRepository @Inject constructor(
     }
 
 }
+
+

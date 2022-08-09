@@ -4,11 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.LoadState
 import com.sahalnazar.paging3_retrofit_roomdb.data.model.MovieDetailResponse
 import com.sahalnazar.paging3_retrofit_roomdb.data.remote.AppRepository
 import com.sahalnazar.paging3_retrofit_roomdb.util.BaseResult
-import com.sahalnazar.paging3_retrofit_roomdb.util.ResultWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,14 +20,18 @@ class DetailViewModel @Inject constructor(
     val movieDetails: LiveData<BaseResult<MovieDetailResponse?>> = _movieDetails
 
     fun fetchMovieDetails(movieId: String) {
-        _movieDetails.value = BaseResult.loading()
         viewModelScope.launch {
-            when (val result = repository.fetMovieDetail(movieId)) {
-                is ResultWrapper.Success -> {
-                    _movieDetails.value = BaseResult.success(result.data, result.code)
-                }
-                is ResultWrapper.Failure -> {
-                    _movieDetails.value = BaseResult.success(null, result.code)
+            repository.fetMovieDetail(movieId).collect { response ->
+                when (response.status) {
+                    BaseResult.Status.SUCCESS -> {
+                        _movieDetails.value = BaseResult.success(response.data, response.code)
+                    }
+                    BaseResult.Status.ERROR -> {
+                        _movieDetails.value = BaseResult.error(response.message ?: "Something went wrong", null, null)
+                    }
+                    BaseResult.Status.LOADING -> {
+                        _movieDetails.value = BaseResult.loading()
+                    }
                 }
             }
         }

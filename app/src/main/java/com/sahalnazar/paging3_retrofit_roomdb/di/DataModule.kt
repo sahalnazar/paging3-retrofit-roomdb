@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.sahalnazar.paging3_retrofit_roomdb.BuildConfig
 import com.sahalnazar.paging3_retrofit_roomdb.data.db.AppDatabase
+import com.sahalnazar.paging3_retrofit_roomdb.data.db.dao.MovieDetailDao
 import com.sahalnazar.paging3_retrofit_roomdb.data.db.dao.MoviesDao
 import com.sahalnazar.paging3_retrofit_roomdb.data.db.dao.RemoteKeysDao
 import dagger.Module
@@ -44,4 +45,8 @@ object DataModule {
     @Provides
     @Singleton
     fun providesMoviesDao(appDataBase: AppDatabase): MoviesDao = appDataBase.remoteMoviesDao()
+
+    @Provides
+    @Singleton
+    fun providesMovieDetailsDao(appDataBase: AppDatabase): MovieDetailDao = appDataBase.remoteMovieDetailsDao()
 }

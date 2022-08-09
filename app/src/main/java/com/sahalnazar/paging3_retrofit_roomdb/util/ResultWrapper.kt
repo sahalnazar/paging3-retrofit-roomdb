@@ -16,11 +16,11 @@ data class BaseResult<out T>(val status: Status, val data: T?, val message: Stri
     }
 
     companion object {
-        fun <T> success(data: T, code: Int): BaseResult<T> {
+        fun <T> success(data: T, code: Int?): BaseResult<T> {
             return BaseResult(Status.SUCCESS, data, null, code)
         }
 
-        fun <T> error(message: String, data: T?, code: Int): BaseResult<T> {
+        fun <T> error(message: String, data: T?, code: Int?): BaseResult<T> {
             return BaseResult(Status.ERROR, data, message, code)
         }
 
